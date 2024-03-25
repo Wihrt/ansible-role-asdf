@@ -93,10 +93,10 @@
   become_user: "{{ asdf_user }}"
 
 - name: "set group permissions"
-  become: yes
+  become: true
   file:
     path: "{{ asdf_dir }}"
     owner: "{{ asdf_user }}"
     group: "{{ asdf_group }}"
     state: directory
-    recurse: yes
+    recurse: true

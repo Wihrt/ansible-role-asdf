@@ -26,11 +26,6 @@
     asdf_config_file: "{{ asdf_dir }}/asdfrc"
   when: asdf_config_file is undefined
 
-- name: "set asdf_default_tool_versions_file variable based on asdf_dir"
-  set_fact:
-    asdf_default_tool_versions_file: "{{ asdf_dir }}/tool-versions"
-  when: asdf_default_tool_versions_file is undefined
-
 - name: "install asdf global dependencies with apt"
   apt:
     name: "{{ asdf_apt_global_dependencies }}"

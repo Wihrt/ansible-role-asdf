@@ -1,11 +1,13 @@
 ---
 # defaults file for asdf
-asdf_version: "v0.8.1"
+asdf_version: "v0.14.1"
 asdf_user: "deploy"
 asdf_group: "deploy"
 # defaults to ~/.asdf for the specified user
 #asdf_dir: "/opt/asdf-vm"
-asdf_legacy_version_file: "yes"
+asdf_configuration_options: 
+  legacy_version_file: "yes"
+asdf_default_tool_versions_file: ".tool-versions"
 
 asdf_plugins: []
 # asdf_plugins:
