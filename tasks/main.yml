@@ -1,8 +1,25 @@
 ---
-- name: "install asdf"
-  import_tasks: "install.yml"
+- name: Remove 'v' prefix from asdf_version
+  ansible.builtin.set_fact:
+    clean_asdf_version: "{{ asdf_version | regex_replace('^v', '') }}"
   tags: [asdf, asdf-install]
 
-- name: "install plugins"
-  import_tasks: "plugins.yml"
+- name: install asdf >= v0.16
+  ansible.builtin.import_tasks: "install_go.yml"
+  tags: [asdf, asdf-install]
+  when: clean_asdf_version | version_compare(asdf_go_version, '>=')
+
+- name: "install asdf < v0.16"
+  ansible.builtin.import_tasks: "install_bash.yml"
+  tags: [asdf, asdf-install]
+  when: clean_asdf_version | version_compare(asdf_go_version, '<')
+
+- name: "install plugins with asdf >= v0.16"
+  ansible.builtin.import_tasks: "plugins_go.yml"
   tags: [asdf, asdf-plugins]
+  when: clean_asdf_version | version_compare(asdf_go_version, '>=')
+
+- name: "install plugins with asdf < v0.16"
+  ansible.builtin.import_tasks: "plugins_bash.yml"
+  tags: [asdf, asdf-plugins]
+  when: clean_asdf_version | version_compare(asdf_go_version, '<')

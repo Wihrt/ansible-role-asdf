@@ -1,30 +1,7 @@
 ---
-- name: "get users HOME"
-  getent:
-    database: passwd
-    key: "{{ asdf_user }}"
-    split: ":"
-  when: asdf_dir is undefined
+- name: Set ASDF defaults
+  ansible.builtin.include_tasks: instal_defaults.yml
 
-- name: "set asdf_config_file based on home directory"
-  set_fact:
-    asdf_config_file: "{{ getent_passwd[asdf_user][4] }}/.asdfrc"
-  when: asdf_dir is undefined and asdf_config_file is undefined
-
-- name: "set asdf_default_tool_versions_file based on home directory"
-  set_fact:
-    asdf_default_tool_versions_file: "{{ getent_passwd[asdf_user][4] }}/.tool-versions"
-  when: asdf_dir is undefined and asdf_default_tool_versions_file is undefined
-
-- name: "set asdf_dir variable based on home directory"
-  set_fact:
-    asdf_dir: "{{ getent_passwd[asdf_user][4] }}/.asdf"
-  when: asdf_dir is undefined
-
-- name: "set asdf_config_file variable based on asdf_dir"
-  set_fact:
-    asdf_config_file: "{{ asdf_dir }}/asdfrc"
-  when: asdf_config_file is undefined
 
 - name: "install asdf global dependencies with apt"
   apt:

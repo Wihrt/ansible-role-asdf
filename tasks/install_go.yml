@@ -1,0 +1,31 @@
+- name: Set ASDF defaults
+  ansible.builtin.include_tasks: instal_defaults.yml
+
+- name: Fetch ansible_system
+  ansible.builtin.set_fact:
+    asdf_system: "{{ ansible_system | lower }}"
+
+- name: Fetch ansible_architecture (other than amd64)
+  ansible.builtin.set_fact:
+    asdf_architecture: "{{ ansible_architecture }}"
+  when: ansible_architecture != "x86_64"
+
+- name: Fetch ansible_architecture (for amd64)
+  ansible.builtin.set_fact:
+    asdf_architecture: "amd64"
+  when: ansible_architecture == "x86_64"
+
+
+- name: Download asdf package
+  ansible.builtin.get_url:
+    url: "https://github.com/asdf-vm/asdf/releases/download/{{ asdf_version }}/asdf-{{ asdf_version }}-{{ asdf_system }}-{{ asdf_architecture }}.tar.gz"
+    dest: "asdf.tar.gz"
+    mode: "0644"
+  register: asdf_download
+
+- name: Extract asdf package
+  ansible.builtin.unarchive:
+    src: "asdf.tar.gz"
+    dest: "{{ asdf_dir }}"
+    remote_src: true
+    creates: "{{ asdf_dir }}/bin/asdf"

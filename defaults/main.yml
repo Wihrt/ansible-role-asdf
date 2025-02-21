@@ -1,6 +1,6 @@
 ---
 # defaults file for asdf
-asdf_version: "v0.14.1"
+asdf_version: "v0.16.3"
 asdf_user: "deploy"
 asdf_group: "deploy"
 # defaults to ~/.asdf for the specified user
@@ -19,10 +19,14 @@ asdf_plugins: []
 #     delete_versions: []
 #     global: 20.1
 
-asdf_apt_global_dependencies: ["unzip", "git", "curl", "autoconf", "automake", "gcc",
-  "g++", "make", "patch", "pkg-config", "binutils", "libtool", "bison", "libreadline-dev"]
-asdf_yum_global_dependencies: ["unzip", "git", "curl", "autoconf", "automake", "gcc",
-  "gcc-c++", "make", "patch", "pkgconfig", "binutils", "libtool", "bison", "readline-devel"]
+asdf_apt_global_dependencies: ["git", "curl"]
+asdf_yum_global_dependencies: ["git", "curl"]
+
+# Dependencies for ASDF older than 0.16.0
+# asdf_apt_global_dependencies: ["unzip", "git", "curl", "autoconf", "automake", "gcc",
+#   "g++", "make", "patch", "pkg-config", "binutils", "libtool", "bison", "libreadline-dev"]
+# asdf_yum_global_dependencies: ["unzip", "git", "curl", "autoconf", "automake", "gcc",
+#   "gcc-c++", "make", "patch", "pkgconfig", "binutils", "libtool", "bison", "readline-devel"]
 
 asdf_apt_optional_dependencies: []
 asdf_yum_optional_dependencies: []
