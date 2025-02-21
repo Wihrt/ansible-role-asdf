@@ -23,14 +23,6 @@
   until: yum_deps_result is succeeded
   when: ansible_os_family == "RedHat"
 
-- name: "ensure asdf_dir presence and ownership"
-  file:
-    path: "{{ asdf_dir }}"
-    owner: "{{ asdf_user }}"
-    group: "{{ asdf_group }}"
-    state: directory
-  become: True
-
 - name: "install asdf"
   git:
     repo: "https://github.com/asdf-vm/asdf.git"

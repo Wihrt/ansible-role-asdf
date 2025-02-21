@@ -24,3 +24,21 @@
   set_fact:
     asdf_config_file: "{{ asdf_dir }}/asdfrc"
   when: asdf_config_file is undefined
+
+- name: "ensure asdf_dir presence and ownership"
+  file:
+    path: "{{ asdf_dir }}"
+    owner: "{{ asdf_user }}"
+    group: "{{ asdf_group }}"
+    state: directory
+  become: True
+
+- name: "ensure asdf_dir/bin presence and ownership"
+  file:
+    path: "{{ asdf_dir }}/bin"
+    owner: "{{ asdf_user }}"
+    group: "{{ asdf_group }}"
+    state: directory
+  become: True
+  register: asdf_dir_bin
+    

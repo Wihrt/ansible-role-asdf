@@ -1,5 +1,5 @@
 - name: Set ASDF defaults
-  ansible.builtin.include_tasks: instal_defaults.yml
+  ansible.builtin.include_tasks: install_defaults.yml
 
 - name: Fetch ansible_system
   ansible.builtin.set_fact:
@@ -15,17 +15,39 @@
     asdf_architecture: "amd64"
   when: ansible_architecture == "x86_64"
 
+- name: "ensure {{ asdf_dir }}/bin presence and ownership"
+  file:
+    path: "{{ asdf_dir }}/bin"
+    owner: "{{ asdf_user }}"
+    group: "{{ asdf_group }}"
+    state: directory
+  become: True
+  register: asdf_bin_dir
 
 - name: Download asdf package
   ansible.builtin.get_url:
     url: "https://github.com/asdf-vm/asdf/releases/download/{{ asdf_version }}/asdf-{{ asdf_version }}-{{ asdf_system }}-{{ asdf_architecture }}.tar.gz"
-    dest: "asdf.tar.gz"
+    dest: "{{ asdf_bin_dir.path }}/asdf.tar.gz"
     mode: "0644"
   register: asdf_download
 
 - name: Extract asdf package
   ansible.builtin.unarchive:
-    src: "asdf.tar.gz"
-    dest: "{{ asdf_dir }}"
+    src: "{{ asdf_download.dest }}"
+    dest: "{{ asdf_bin_dir.path }}"
     remote_src: true
     creates: "{{ asdf_dir }}/bin/asdf"
+
+- name: Remove asdf package
+  ansible.builtin.file:
+    path: "{{ asdf_download.dest }}"
+    state: absent
+
+- name: "source asdf script"
+  template:
+    src: "asdf.go.sh.j2"
+    dest: "/etc/profile.d/asdf.sh"
+    owner: "root"
+    group: "root"
+    mode: 0755
+  become: True

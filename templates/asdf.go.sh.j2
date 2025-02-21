@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+[ -n "$BASH_VERSION" ] || return 0
+
+export PATH="{{ asdf_bin_dir.path }}:$PATH"
+export ASDF_DATA_DIR="{{ asdf_dir }}"
+export PATH="$ASDF_DATA_DIR/shims:$PATH"
